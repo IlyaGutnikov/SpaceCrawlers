@@ -26,6 +26,22 @@ public class SpaceCrawlerAI : MonoBehaviour {
 		wander = GetComponent<Wander1>();
 	}
 
+	void OnCollisionEnter (Collision col) {
+	
+		if(col.gameObject.tag.Equals("Mineral"))
+		{
+			IsWander = false;
+			IsGoingToBase = true;
+			currentTarget = col.gameObject.transform;
+		}
+
+		if(col.gameObject.tag.Equals("Base") && (currentTarget != null))
+		{
+			IsWander = false;
+			IsGoingToBase = false;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		Vector3 accel;
