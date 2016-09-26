@@ -36,16 +36,16 @@ public class AILerp : MonoBehaviour {
 	 */
 	public Transform target;
 
-    /// <summary>
-    /// ¡‡Á‡ ‰Îˇ AI
-    /// </summary>
-    public Transform AIbase;
+	/// <summary>
+	/// –ë–∞–∑–∞ –¥–ª—è AI
+	/// </summary>
+	public Transform baseTarget;
 
-    /** Enables or disables searching for paths.
+	/** Enables or disables searching for paths.
 	 * Setting this to false does not stop any active path requests from being calculated or stop it from continuing to follow the current path.
 	 * \see #canMove
 	 */
-    public bool canSearch = true;
+	public bool canSearch = true;
 
 	/** Enables or disables movement.
 	 * \see #canSearch */
@@ -241,7 +241,7 @@ public class AILerp : MonoBehaviour {
 	 * and override the function in that script.
 	 */
 	public virtual void OnTargetReached () {
-        target = AIbase;
+		target = baseTarget;
 	}
 
 	/** Called when a requested path has finished calculation.
