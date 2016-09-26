@@ -9,12 +9,14 @@ public class SpaceCrawlerAI : MonoBehaviour {
 	/// <summary>
 	/// Space Crawler base
 	/// </summary>
-	public Transform baseTarget;
+	public GameObject baseTarget;
 
 	/// <summary>
 	/// Current Target
 	/// </summary>
-	public Transform currentTarget;
+	public GameObject currentTarget;
+
+	public TrailRenderer trailRenderer;
 
 	public bool IsWander = true;
 
@@ -24,21 +26,39 @@ public class SpaceCrawlerAI : MonoBehaviour {
 	void Start () {
 		steeringBasics = GetComponent<SteeringBasics>();
 		wander = GetComponent<Wander1>();
+		trailRenderer.enabled = false;
 	}
 
 	void OnCollisionEnter (Collision col) {
 	
-		if(col.gameObject.tag.Equals("Mineral"))
+		if(col.gameObject.tag.Equals("Mineral") && (currentTarget == null))
 		{
 			IsWander = false;
 			IsGoingToBase = true;
-			currentTarget = col.gameObject.transform;
+			currentTarget = col.gameObject;
+
+			trailRenderer.enabled = true;
+		}
+
+		if(col.gameObject.tag.Equals("Mineral") && (currentTarget != null))
+		{
+			IsWander = false;
+			IsGoingToBase = true;
+
+			trailRenderer.enabled = true;
 		}
 
 		if(col.gameObject.tag.Equals("Base") && (currentTarget != null))
 		{
 			IsWander = false;
 			IsGoingToBase = false;
+		}
+
+		if(col.gameObject.tag.Equals("Base") && (currentTarget == null))
+		{
+			IsWander = true;
+			IsGoingToBase = false;
+			trailRenderer.enabled = false;
 		}
 	}
 
@@ -51,10 +71,10 @@ public class SpaceCrawlerAI : MonoBehaviour {
 		} else {
 			//go to base if find mineral
 			if (IsGoingToBase == true) {
-				accel = steeringBasics.seek(baseTarget.position);
+				accel = steeringBasics.seek(baseTarget.transform.position);
 			} else {
 				//go to mineral if it not-empty
-				accel = steeringBasics.seek(currentTarget.position);
+				accel = steeringBasics.seek(currentTarget.transform.position);
 			}
 		}
 
